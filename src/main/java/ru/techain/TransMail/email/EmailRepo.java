@@ -7,6 +7,7 @@ import javax.mail.*;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -49,6 +50,7 @@ public class EmailRepo implements EmailSender {
         session.setDebug(true);
 
         MimeMessage msg = new MimeMessage(session);
+        Multipart multipart = new MimeMultipart();
 
         msg.setSubject(letter.subject);
         msg.setFrom(letter.fromEmail);
@@ -57,7 +59,11 @@ public class EmailRepo implements EmailSender {
         MimeBodyPart content = new MimeBodyPart();
         content.setText(letter.content);
 
-        Multipart multipart = new MimeMultipart();
+        for (File prize: letter.attachments) {
+            MimeBodyPart attachmentPart = new MimeBodyPart();
+            attachmentPart.attachFile(prize);
+            multipart.addBodyPart(attachmentPart);
+        }
         multipart.addBodyPart(content);
 
         msg.setContent(multipart);
