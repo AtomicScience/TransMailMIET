@@ -20,15 +20,70 @@ import java.util.*;
 
 @RestController
 public class ReplyRequestController {
-    @RequestMapping(value="/sendReply", method= RequestMethod.POST)
-    public @ResponseBody String handleSendReply(@RequestParam("email") String email,
-                                                @RequestParam("password") String password) throws IOException {
-        File pdfDirectory = new File("src/main/resources/static/pdf");
-
+    @RequestMapping(value = "/sendReply", method = RequestMethod.POST)
+    public @ResponseBody
+    String handleSendReply(@RequestParam("email") String email,
+                           @RequestParam("password") String password) throws IOException {
         FullLotTableParser parser = getTestTableParser();
+
+        EmailSender sender = new EmailRepo();
+
+        replyForSberbank(parser.getFinalEmployeesByProduct("Онлайн-подписка Сберпрайм (12 месяцев)"), email, password);
+
+        List<FinalEmployee> iviEmployees = parser.getFinalEmployeesByProduct("Онлайн-подписка ivi.ru (12 месяцев)");
+        List<FinalEmployee> litresEmployees = parser.getFinalEmployeesByProduct("1000 рублей на Литрес");
+        List<FinalEmployee> dozhdEmployees = parser.getFinalEmployeesByProduct("Онлайн-подписка Дождь (12 месяцев)");
+
+        List<Letter> iviLet = createLetters(iviEmployees, "iviXcvaaFdsfadsgjlOp\n" +
+                "iviSdfksadvLksdfwers\n" +
+                "iviJfdxnvaaqerospaxz", email, password);
+
+        List<Letter> litersLet = createLetters(litresEmployees, "litresKikolfadsfczx\n" +
+                "litresJsdaflqXzcASD", email, password);
+
+        List<Letter> dozhdLet = createLetters(dozhdEmployees, "dozhdSopolasfksadfMxz",
+                email, password);
+
+        for (Letter each : iviLet) {
+            try {
+                sender.sendLetter(each);
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+        }
+        for (Letter each : litersLet) {
+            try {
+                sender.sendLetter(each);
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+        }
+        for (Letter each : dozhdLet) {
+            try {
+                sender.sendLetter(each);
+            } catch (MessagingException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return "success";
+    }
+
+    private FullLotTableParser getTestTableParser() throws IOException {
+        FileReader ordersTable = new FileReader(new File("src/main/resources/static/mock/mock_lots.csv"), Charset.forName("CP1251")); // TODO
+        FileReader employeesTable = new FileReader(new File("src/main/resources/static/mock/mock_employees.csv"), Charset.forName("CP1251")); // TODO
+
+        return new RealFullLotTableParser(ordersTable, employeesTable);
+    }
+
+    private List<File> getPdfFiles() {
+        return Arrays.asList(Objects.requireNonNull(new File("src/main/resources/static/pdf").listFiles()));
+    }
+
+    private void replyForSberbank(List<FinalEmployee> employees, String email, String password) {
+        File pdfDirectory = new File("src/main/resources/static/pdf");
         List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(pdfDirectory.listFiles())));
 
-        List<FinalEmployee> employees = parser.getFinalEmployeesByProduct("Онлайн-подписка Сберпрайм (12 месяцев)");
         int i = 0;
 
         EmailSender sender = new EmailRepo();
@@ -38,7 +93,7 @@ public class ReplyRequestController {
                     e.getName() + " " + e.getPatronymic(), e.getNameProduct());
             String downStr = "Ваш Андрей Пьявкин";
             List<File> toSend = new ArrayList<>();
-            for (int j = i; j-i < e.getCount(); j++) {
+            for (int j = i; j - i < e.getCount(); j++) {
                 lb.addAttachment(files.get(j));
             }
             i += e.getCount();
@@ -51,22 +106,35 @@ public class ReplyRequestController {
 
             try {
                 sender.sendLetter(letter);
-            } catch (MessagingException messagingException) {
-                return "Ошибка отправки сообщения: " + messagingException.getLocalizedMessage();
+            } catch (MessagingException | IOException messagingException) {
+
             }
         }
-
-        return "Сообщения отправлены";
     }
 
-    private FullLotTableParser getTestTableParser() throws IOException {
-        FileReader ordersTable = new FileReader(new File("src/main/resources/static/mock/mock_lots.csv"), Charset.forName("CP1251")); // TODO
-        FileReader employeesTable = new FileReader(new File("src/main/resources/static/mock/mock_employees.csv"), Charset.forName("CP1251")); // TODO
 
-        return new RealFullLotTableParser(ordersTable, employeesTable);
-    }
-
-    private List<File> getPdfFiles() {
-        return Arrays.asList(Objects.requireNonNull(new File("src/main/resources/static/pdf").listFiles()));
+    static public List<Letter> createLetters(List<FinalEmployee> em, String codes, String fromEmail, String password) {
+        int i = 0;
+        List<Letter> toRet = new ArrayList<>();
+        List<String> codess = Arrays.asList(codes.split("\n"));
+        for (FinalEmployee e : em) {
+            LetterBuilder lb = new LetterBuilder();
+            String str = String.format("Уважаемый %s, вас ожидает ваш подарок: %s",
+                    e.getName() + " " + e.getPatronymic(), e.getNameProduct());
+            String downStr = "Ваш Андрей Пьявкин";
+            StringBuilder content = new StringBuilder().append("\n");
+            for (int j = i; j - i < e.getCount(); j++) {
+                content.append(codess.get(j)).append("\n");
+            }
+            i += e.getCount();
+            Letter letter = lb.setFromEmail(fromEmail)
+                    .setPassword(password)
+                    .setSubject("Ваш подарок!")
+                    .setContent(str + "\n" + content.toString() + "\n" + downStr)
+                    .setToEmail(e.getEmail())
+                    .build();
+            toRet.add(letter);
+        }
+        return toRet;
     }
 }
