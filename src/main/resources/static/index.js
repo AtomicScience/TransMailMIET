@@ -69,7 +69,7 @@ function handleDrop(e) {
 }
 
 function uploadFile(file) {
-  let url = 'ВАШ URL ДЛЯ ЗАГРУЗКИ ФАЙЛОВ'
+  let url = 'upload'
   let formData = new FormData()
   formData.append('file', file)
   fetch(url, {
@@ -77,7 +77,6 @@ function uploadFile(file) {
     body: formData
   })
   .then(progressDone)
-  .catch(() => { dropPrompt.innerHTML = 'Ошибка отправки запроса' })
 }
 
 function initializeProgress() {

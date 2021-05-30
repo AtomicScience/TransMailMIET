@@ -28,11 +28,10 @@
 </div>
 
   <div id="drop-area">
-    <form class="my-form">
+    <form method="post" action="/upload" enctype=multipart/form-data class="my-form">
       <p id="drop-prompt">Загрузите файл c расширением .csv с помощью диалога выбора файлов или перетащив нужный файл в выделенную область</p>
-      <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-      <label class="button" for="fileElem">Выбрать файл</label>
-      <input id="button-send-files" class="button" type="submit">
+      <input type="file" name="file">
+      <input  class="button" type="submit">
       <!-- <label id="button-send-files" class="button">Отправить</label> -->
     </form>
     <progress id="progress-bar" max=100 value=0></progress>

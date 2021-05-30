@@ -20,10 +20,10 @@ import ru.techain.TransMail.file.FileSaver;
 public class FileUploadController {
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
 	public @ResponseBody
-	ModelAndView handleFileUpload(@RequestParam("name") String name,
-								  @RequestParam("file") MultipartFile file) {
+	ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file) {
 		ModelAndView modelAndView = new ModelAndView();
 		try {
+			System.out.println("Gotcha!");
 			modelAndView.setViewName("letterCompose");
 
 			File tempFile  = FileSaver.loadFile(file);
@@ -35,8 +35,7 @@ public class FileUploadController {
 					.addSuffix("До свидания!")
 					.build();
 
-
-			modelAndView.addObject("letter", requestLetter.content);
+			modelAndView.addObject("list", requestLetter.content);
 			return modelAndView;
 		} catch (IOException e) {
 			modelAndView.setViewName("uploadError");
