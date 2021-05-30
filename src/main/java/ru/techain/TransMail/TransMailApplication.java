@@ -29,48 +29,50 @@ import java.util.Objects;
 @RestController
 public class TransMailApplication {
     public static void main(String[] args) {
-		SpringApplication.run(TransMailApplication.class, args);
-//		File pdfDirectory = new File("src/main/resources/static/pdf");
-//
-//		FullLotTableParser parser = new RealFullLotTableParser();
-//		List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(pdfDirectory.listFiles())));
-//
-//		List<FinalEmployee> employees = parser.getFinalEmployeesByProduct("Сберпрайм");
-//		int i = 0;
-//		for (FinalEmployee e: employees) {
-//			LetterBuilder lb = new LetterBuilder();
-//			String str = String.format("Уважаемый %s, вас ожидает ваш подарок: %s",
-//					e.getName() + " " + e.getPatronymic(), e.getNameProduct());
-//
-//			if (e.getNameProduct().equals("Онлайн-подписка Сберпрайм (12 месяцев)"))
-//
-//			lb.setFromEmail("ENTERYOUTEMAIL@gmail.com")
-//					.setPassword("ENTERYOURPASSWORD")
-//					.setSubject("Ваш подарок!")
-//					.setContent()
-//					.setToEmail(e.getEmail());
-//
-//
-//		}
+        SpringApplication.run(TransMailApplication.class, args);
+        File pdfDirectory = new File("src/main/resources/static/pdf");
+
+        FullLotTableParser parser = new RealFullLotTableParser();
+        List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(pdfDirectory.listFiles())));
+
+        List<FinalEmployee> employees = parser.getFinalEmployeesByProduct("Онлайн-подписка Сберпрайм (12 месяцев)");
+        int i = 0;
+        for (FinalEmployee e : employees) {
+            LetterBuilder lb = new LetterBuilder();
+            String str = String.format("Уважаемый %s, вас ожидает ваш подарок: %s",
+                    e.getName() + " " + e.getPatronymic(), e.getNameProduct());
+            String downStr = "Ваш Андрей Пьявкин";
+            List<File> toSend = new ArrayList<>();
+            for (int j = i; j-i < e.getCount(); j++) {
+                lb.addAttachment(files.get(j));
+            }
+            i += e.getCount();
+            Letter letter = lb.setFromEmail("ENTERYOUTEMAIL@gmail.com")
+                    .setPassword("ENTERYOURPASSWORD")
+                    .setSubject("Ваш подарок!")
+                    .setContent(str + "\n\n" + downStr)
+                    .setToEmail(e.getEmail())
+                    .build();
+        }
 
 
     }
 
     @Bean
-	public MultipartConfigElement multipartConfigElement() {
-		MultipartConfigFactory factory = new MultipartConfigFactory();
-		factory.setMaxFileSize(DataSize.of(128, DataUnit.KILOBYTES));
-		factory.setMaxRequestSize(DataSize.of(128, DataUnit.KILOBYTES));
-		return factory.createMultipartConfig();
-	}
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.of(128, DataUnit.KILOBYTES));
+        factory.setMaxRequestSize(DataSize.of(128, DataUnit.KILOBYTES));
+        return factory.createMultipartConfig();
+    }
 
-	@GetMapping("/hello")
+    @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
         return String.format("Hello %s!", name);
     }
 
-	@Bean
-	public LayoutDialect layoutDialect() {
-		return new LayoutDialect();
-	}
+    @Bean
+    public LayoutDialect layoutDialect() {
+        return new LayoutDialect();
+    }
 }
