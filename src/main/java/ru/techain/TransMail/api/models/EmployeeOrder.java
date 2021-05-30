@@ -1,5 +1,4 @@
 package ru.techain.TransMail.api.models;
-import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 
 public class EmployeeOrder {
@@ -37,7 +36,7 @@ public class EmployeeOrder {
     @CsvBindByPosition(position = 11)
     private String categorySpecialLot;
     @CsvBindByPosition(position = 12)
-    private String typeDate;
+    private String userCrocCode;
 
     @CsvBindByPosition(position = 13)
     private String price;
@@ -52,7 +51,7 @@ public class EmployeeOrder {
     private String status;
 
     @CsvBindByPosition(position = 17)
-    private String userCrockCode;
+    private String typeDate;
 
     @CsvBindByPosition(position = 18)
     private String login;
@@ -119,7 +118,7 @@ public class EmployeeOrder {
     private String status;
 
     @CsvBindByName(column = "КрокКод пользователя")
-    private String userCrockCode;
+    private String userCrocCode;
 
     @CsvBindByName(column = "Логин")
     private String login;
@@ -216,12 +215,12 @@ public class EmployeeOrder {
         this.status = status;
     }
 
-    public String getUserCrockCode() {
-        return userCrockCode;
+    public String getUserCrocCode() {
+        return userCrocCode;
     }
 
-    public void setUserCrockCode(String userCrockCode) {
-        this.userCrockCode = userCrockCode;
+    public void setUserCrocCode(String userCrocCode) {
+        this.userCrocCode = userCrocCode;
     }
 
     public String getLogin() {
@@ -334,7 +333,7 @@ public class EmployeeOrder {
                 ", sum='" + sum + '\'' +
                 ", date='" + date + '\'' +
                 ", status='" + status + '\'' +
-                ", userCrockCode='" + userCrockCode + '\'' +
+                ", userCrocCode='" + userCrocCode + '\'' +
                 ", login='" + login + '\'' +
                 ", surname='" + surname + '\'' +
                 ", name='" + name + '\'' +

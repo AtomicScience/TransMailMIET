@@ -23,12 +23,12 @@ public class RealLotableParser implements LotTableParser {
                 .parse();
         employees.remove(0);
         mapPrizes=new HashMap<>();
-
+/*
         employees.forEach(o->{
             mapPrizes.computeIfPresent(o.getNameProduct(),(a,b)->b+=Integer.parseInt(o.getCount()));
             mapPrizes.putIfAbsent(o.getNameProduct(),Integer.parseInt(o.getCount()));
         });
-
+*/
     }
     @Override
     public List<EmployeeOrder> getEmployees() {
