@@ -15,22 +15,20 @@ public class RealLotableParser implements LotTableParser {
     private List<EmployeeOrder> employees;
     private Map<String, Integer> mapPrizes;
 
-    public RealLotableParser(FileReader fileReader){
+    public RealLotableParser(FileReader fileReader) {
         employees = new CsvToBeanBuilder(fileReader)
                 .withSeparator(';')
                 .withType(EmployeeOrder.class)
                 .build()
                 .parse();
         employees.remove(0);
-        mapPrizes=new HashMap<>();
-/*
-        employees.forEach(o->{
-            mapPrizes.putIfAbsent(o.getNameProduct(),Integer.parseInt(o.getCount()));
-
-            mapPrizes.put(o.getNameProduct(), mapPrizes.get(o.getNameProduct()) + Integer.parseInt(o.getCount()));
+        mapPrizes = new HashMap<>();
+        employees.forEach(o -> {
+            mapPrizes.computeIfPresent(o.getNameProduct(), (a, b) -> b += Integer.parseInt(o.getCount()));
+            mapPrizes.putIfAbsent(o.getNameProduct(), Integer.parseInt(o.getCount()));
         });
-*/
     }
+
     @Override
     public List<EmployeeOrder> getEmployees() {
         return employees;

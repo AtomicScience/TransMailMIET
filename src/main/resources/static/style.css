@@ -4,9 +4,6 @@
 #mylist{
     margin-right: 200px;
 }
-#bod{
-    background-image: url(back.jpg);
-}
 #Centr{
     margin-left: auto;
     margin-right: auto;
@@ -17,8 +14,6 @@
     border-radius: 20px;
     background: rgb(141, 213, 255); /* Цвет фона */
     padding: 10px; /* Поля вокруг текста */
-       
-    
     
 }
 #bttn{
