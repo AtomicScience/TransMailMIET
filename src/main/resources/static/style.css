@@ -1,0 +1,26 @@
+#inpt {
+    background-color: RGB(207,226,255);
+}
+#mylist{
+    margin-right: 200px;
+}
+#bod{
+    background-image: url(back.jpg);
+}
+#Centr{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10rem;
+    width: 50rem;
+    
+    border: 1px double rgb(0, 0, 0); /* Параметры границы */
+    border-radius: 20px;
+    background: rgb(141, 213, 255); /* Цвет фона */
+    padding: 10px; /* Поля вокруг текста */
+       
+    
+    
+}
+#bttn{
+    margin-right: auto;
+}

@@ -4,9 +4,9 @@
 
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-    <link rel = "stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,83 +14,56 @@
     <title>Document</title>
 </head>
 
-<body>
+<body id = bod>
 
+    <div id="Centr">
+        <form method ="post" action="/sendRequestEmail">
+            <div class="row g-3 align-items-center">
+                <div>
+                    <div class="mb-3">
+                        <label for="fromEmail" class="form-label">От кого (Email)</label>
+                        <input type="email" class="form-control" id="fromEmail" name="fromEmail" aria-describedby="emailHelp">
 
-
-
-<form>
-    <div class="row g-3 align-items-center">
-        <div class="col-2">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">От кого (Email)</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Пароль</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                </div>
 
             </div>
-        </div>
-        <div class="col-2">
-            <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                <input type="password" class="form-control" id="exampleInputPassword1">
+            <div class="row g-3 align-items-center">
+                <div>
+                    <label for="toEmail" class="form-label">Кому (Email)</label>
+                    <input type="email" class="form-control" id="toEmail" name="toEmail" aria-describedby="emailHelp">
+
+                </div>
             </div>
+        <br>
+
+
+
+        <div class="alert alert-primary">
+            <input class="form-control" type="text" placeholder="Вверхний текст" name="prefix" id="prefix">
+
+            <p th:utext="${list}"> </p>
+
+            <input class="form-control" type="text" placeholder="Нижний текст" name="suffix" id="suffix">
         </div>
 
+
+
+        <br>
+
+            <input type="hidden" name="tempFileName" th:value="${listTempFile}">
+            <input type="submit">
+        </form>
     </div>
-    <div class="row g-3 align-items-center">
-        <div class="col-4">
-            <label for="exampleInputEmail1" class="form-label">Кому (Email)</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 
-        </div>
-    </div>
-
-</form>
-<br>
-
-
-
-<div class = "alert alert-primary col-4">
-    <input class="form-control" type="text" placeholder="Вверхний текст" id = "inpt">
-
-
-    <p th:utext="${list}"> </p>
-
-    <input class="form-control" type="text" placeholder="Нижний текст" id = "inpt">
-</div>
-
-
-
-
-
-<!-- <div class="alert alert-primary col-3" role="alert">
-
-
-
-    <ul class="list-unstyled ">
-        <li>Это список</li>
-        <li>Не редактируемый</li>
-        <li>111</li>
-        <li>222</li>
-        <li>333
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-            </ul>
-        </li>
-        <li>йцу</li>
-    </ul>
-</div> -->
-
-<br>
-
-
-<button type="button" class="btn btn-primary">Отправить</button>
-
-
-
-<script src = "scripts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
         crossorigin="anonymous"></script>
 </body>

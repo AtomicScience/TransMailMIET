@@ -23,19 +23,19 @@ public class FileUploadController {
 	ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file) {
 		ModelAndView modelAndView = new ModelAndView();
 		try {
-			System.out.println("Gotcha!");
 			modelAndView.setViewName("letterCompose");
 
 			File tempFile  = FileSaver.loadFile(file);
 			LotTableParser parser = new RealLotableParser(new FileReader(tempFile, StandardCharsets.UTF_8));
 
 			Letter requestLetter = new RequestLetterBuilder()
-					.addPrefix("Николай, здравствуйте!")
 					.addPrizes(parser.getMapPrizes())
-					.addSuffix("До свидания!")
 					.build();
 
+			File listTempFile = FileSaver.saveStringToTempFile(requestLetter.content);
+
 			modelAndView.addObject("list", requestLetter.content);
+			modelAndView.addObject("listTempFile", listTempFile.getAbsolutePath());
 			return modelAndView;
 		} catch (IOException e) {
 			modelAndView.setViewName("uploadError");

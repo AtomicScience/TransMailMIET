@@ -18,6 +18,11 @@ public class RequestLetterBuilder extends LetterBuilder {
         return this;
     }
 
+    public RequestLetterBuilder addPrizes(String prizes) {
+        builder.append(prizes);
+        return this;
+    }
+
     private String constructRequestLine(Map.Entry<String, Integer> prize) {
         return String.format("%d шт - %s </br>", prize.getValue(), prize.getKey());
     }
