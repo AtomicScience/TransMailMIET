@@ -7,11 +7,13 @@ let dropArea = document.getElementById('drop-area')
 let buttonSendFiles = document.getElementById('button-send-files')
 buttonDisable(buttonSendFiles)
 
+let form = document.getElementById('form')
+
 let fileToBeSend = null
 
 buttonSendFiles.onclick = () => {
   if (buttonSendFiles.className != 'disabled' && fileToBeSend != null) {
-    uploadFile(fileToBeSend) 
+    form.submit() 
   }
 }
 

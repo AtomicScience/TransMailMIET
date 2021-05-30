@@ -28,7 +28,7 @@
 </div>
 
   <div id="drop-area">
-    <form method="post" action="/upload" enctype=multipart/form-data class="my-form">
+    <form id="form" method="post" action="/upload" enctype=multipart/form-data class="my-form">
       <p id="drop-prompt">Загрузите файл c расширением .csv с помощью диалога выбора файлов или перетащив нужный файл в выделенную область</p>
       <input type="file" name="file" id="fileElem" onchange="handleFiles(this.files)">
       <label class="button" for="fileElem">Выбрать файл</label>
