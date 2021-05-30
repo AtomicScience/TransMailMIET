@@ -7,7 +7,7 @@ public class RequestLetterBuilder extends LetterBuilder {
 
     public RequestLetterBuilder addPrefix(String prefix) {
         builder.append(prefix);
-        builder.append("</br>");
+        builder.append("\n");
         return this;
     }
 
@@ -24,7 +24,7 @@ public class RequestLetterBuilder extends LetterBuilder {
     }
 
     private String constructRequestLine(Map.Entry<String, Integer> prize) {
-        return String.format("%d шт - %s </br>", prize.getValue(), prize.getKey());
+        return String.format("%d шт - %s \n", prize.getValue(), prize.getKey());
     }
 
     public RequestLetterBuilder addSuffix(String prefix) {

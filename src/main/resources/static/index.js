@@ -7,6 +7,8 @@ let dropArea = document.getElementById('drop-area')
 let buttonSendFiles = document.getElementById('button-send-files')
 buttonDisable(buttonSendFiles)
 
+let fileSender = document.getElementById('fileElem')
+
 let form = document.getElementById('form')
 
 let fileToBeSend = null
@@ -66,6 +68,7 @@ function handleDrop(e) {
       progressDone()
       buttonEnable(buttonSendFiles)
       fileToBeSend = files[0]
+      fileSender.files = dt.files;
     }
   }
 }

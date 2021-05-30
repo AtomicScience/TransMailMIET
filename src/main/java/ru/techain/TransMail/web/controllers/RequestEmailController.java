@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ru.techain.TransMail.api.LotTableParser;
+import ru.techain.TransMail.api.email.EmailSender;
 import ru.techain.TransMail.api.email.entities.Letter;
 import ru.techain.TransMail.api.email.entities.RequestLetterBuilder;
 import ru.techain.TransMail.api.table.RealLotableParser;
+import ru.techain.TransMail.email.EmailRepo;
 import ru.techain.TransMail.file.FileSaver;
+
+import javax.mail.MessagingException;
 
 @RestController
 public class RequestEmailController {
@@ -35,6 +39,18 @@ public class RequestEmailController {
                 .setToEmail(toEmail)
                 .build();
 
-        return new ModelAndView();
+        EmailSender sender = new EmailRepo();
+
+        try {
+            sender.sendLetter(letter);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+        ModelAndView view = new ModelAndView();
+        view.setViewName("mailSuccess");
+        view.addObject("toEmail", toEmail);
+
+        return view;
     }
 }

@@ -25,8 +25,9 @@ public class RealLotableParser implements LotTableParser {
         mapPrizes=new HashMap<>();
 /*
         employees.forEach(o->{
-            mapPrizes.computeIfPresent(o.getNameProduct(),(a,b)->b+=Integer.parseInt(o.getCount()));
             mapPrizes.putIfAbsent(o.getNameProduct(),Integer.parseInt(o.getCount()));
+
+            mapPrizes.put(o.getNameProduct(), mapPrizes.get(o.getNameProduct()) + Integer.parseInt(o.getCount()));
         });
 */
     }

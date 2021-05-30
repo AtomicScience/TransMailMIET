@@ -30,32 +30,6 @@ import java.util.Objects;
 public class TransMailApplication {
     public static void main(String[] args) {
         SpringApplication.run(TransMailApplication.class, args);
-        File pdfDirectory = new File("src/main/resources/static/pdf");
-
-        FullLotTableParser parser = new RealFullLotTableParser();
-        List<File> files = new ArrayList<>(Arrays.asList(Objects.requireNonNull(pdfDirectory.listFiles())));
-
-        List<FinalEmployee> employees = parser.getFinalEmployeesByProduct("Онлайн-подписка Сберпрайм (12 месяцев)");
-        int i = 0;
-        for (FinalEmployee e : employees) {
-            LetterBuilder lb = new LetterBuilder();
-            String str = String.format("Уважаемый %s, вас ожидает ваш подарок: %s",
-                    e.getName() + " " + e.getPatronymic(), e.getNameProduct());
-            String downStr = "Ваш Андрей Пьявкин";
-            List<File> toSend = new ArrayList<>();
-            for (int j = i; j-i < e.getCount(); j++) {
-                lb.addAttachment(files.get(j));
-            }
-            i += e.getCount();
-            Letter letter = lb.setFromEmail("ENTERYOUTEMAIL@gmail.com")
-                    .setPassword("ENTERYOURPASSWORD")
-                    .setSubject("Ваш подарок!")
-                    .setContent(str + "\n\n" + downStr)
-                    .setToEmail(e.getEmail())
-                    .build();
-        }
-
-
     }
 
     @Bean

@@ -20,13 +20,14 @@ import ru.techain.TransMail.file.FileSaver;
 public class FileUploadController {
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
 	public @ResponseBody
-	ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file) {
+		ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file) {
 		ModelAndView modelAndView = new ModelAndView();
 		try {
 			modelAndView.setViewName("letterCompose");
 
 			File tempFile  = FileSaver.loadFile(file);
-			LotTableParser parser = new RealLotableParser(new FileReader(tempFile, StandardCharsets.UTF_8));
+			System.out.println(FileSaver.loadStringFromTempFile(tempFile.getAbsolutePath()));
+			LotTableParser parser = new RealLotableParser(new FileReader(tempFile, Charset.forName("CP1251")));
 
 			Letter requestLetter = new RequestLetterBuilder()
 					.addPrizes(parser.getMapPrizes())
@@ -34,7 +35,7 @@ public class FileUploadController {
 
 			File listTempFile = FileSaver.saveStringToTempFile(requestLetter.content);
 
-			modelAndView.addObject("list", requestLetter.content);
+			modelAndView.addObject("list", requestLetter.content.replace("\n", "<br/>"));
 			modelAndView.addObject("listTempFile", listTempFile.getAbsolutePath());
 			return modelAndView;
 		} catch (IOException e) {
