@@ -34,7 +34,9 @@ public class ReplyRequestController {
         List<FinalEmployee> litresEmployees = parser.getFinalEmployeesByProduct("1000 рублей на Литрес");
         List<FinalEmployee> dozhdEmployees = parser.getFinalEmployeesByProduct("Онлайн-подписка Дождь (12 месяцев)");
 
-        List<Letter> iviLet = createLetters(iviEmployees, "iviXcvaaFdsfadsgjlOp\n" +
+        List<Letter> iviLet = createLetters(iviEmployees, "iviGasjfkAgwklAsdj\n" +
+                "ivibaskkdhAqaqqhkKa\n" +
+                "iviXcvaaFdsfadsgjlOp\n" +
                 "iviSdfksadvLksdfwers\n" +
                 "iviJfdxnvaaqerospaxz", email, password);
 
