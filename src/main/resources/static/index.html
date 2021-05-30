@@ -8,12 +8,32 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
+
+  <div class="container">
+    <span class="choose">Choose Gender</span>
+  
+      <div class="dropdown">
+        <div class="select">
+          <span>Select Gender</span>
+          <i class="fa fa-chevron-left"></i>
+        </div>
+        <input type="hidden" name="gender">
+        <ul class="dropdown-menu">
+          <li id="male">Male</li>
+          <li id="female">Female</li>
+        </ul>
+      </div>
+  
+  <span class="msg"></span>
+</div>
+
   <div id="drop-area">
     <form class="my-form">
       <p id="drop-prompt">Загрузите файл c расширением .csv с помощью диалога выбора файлов или перетащив нужный файл в выделенную область</p>
       <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
       <label class="button" for="fileElem">Выбрать файл</label>
-      <input type="submit" id="button-send-files" class="button">Отправить</input>
+      <input id="button-send-files" class="button" type="submit">
+      <!-- <label id="button-send-files" class="button">Отправить</label> -->
     </form>
     <progress id="progress-bar" max=100 value=0></progress>
     <div id="gallery"></div>

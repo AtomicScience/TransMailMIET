@@ -7,6 +7,13 @@ let dropArea = document.getElementById('drop-area')
 let buttonSendFiles = document.getElementById('button-send-files')
 buttonDisable(buttonSendFiles)
 
+let fileToBeSend = null
+
+buttonSendFiles.onclick = () => {
+  if (buttonSendFiles.className != 'disabled' && fileToBeSend != null) {
+    uploadFile(fileToBeSend) 
+  }
+}
 
 ;['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
     dropArea.addEventListener(eventName, preventDefaults, false)
@@ -14,6 +21,14 @@ buttonDisable(buttonSendFiles)
   function preventDefaults (e) {
     e.preventDefault()
     e.stopPropagation()
+    ;['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false)
+    })
+  
+    ;['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false)
+    })
+  
   }
 
   ;['dragenter', 'dragover'].forEach(eventName => {
@@ -46,19 +61,15 @@ function handleDrop(e) {
     }
     else {
       dropPrompt.innerHTML = 'Файл ' + files[0].name + ' загружен успешно'
+      progressDone()
       buttonEnable(buttonSendFiles)
-      handleFiles(files[0])
+      fileToBeSend = files[0]
     }
   }
 }
 
-function handleFiles(file) {
-  initializeProgress()
-  uploadFile(file)
-}
-
 function uploadFile(file) {
-  let url = 'upload'
+  let url = 'ВАШ URL ДЛЯ ЗАГРУЗКИ ФАЙЛОВ'
   let formData = new FormData()
   formData.append('file', file)
   fetch(url, {
@@ -66,6 +77,7 @@ function uploadFile(file) {
     body: formData
   })
   .then(progressDone)
+  .catch(() => { dropPrompt.innerHTML = 'Ошибка отправки запроса' })
 }
 
 function initializeProgress() {
@@ -94,3 +106,28 @@ function checkFileFormat(file, format) {
     return false
   }
 }
+
+
+
+// /*Dropdown Menu*/
+// $('.dropdown').click(function () {
+//   $(this).attr('tabindex', 1).focus();
+//   $(this).toggleClass('active');
+//   $(this).find('.dropdown-menu').slideToggle(300);
+// });
+// $('.dropdown').focusout(function () {
+//   $(this).removeClass('active');
+//   $(this).find('.dropdown-menu').slideUp(300);
+// });
+// $('.dropdown .dropdown-menu li').click(function () {
+//   $(this).parents('.dropdown').find('span').text($(this).text());
+//   $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
+// });
+// /*End Dropdown Menu*/
+
+
+// $('.dropdown-menu li').click(function () {
+// var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
+// msg = '<span class="msg">Hidden input value: ';
+// $('.msg').html(msg + input + '</span>');
+// }); 
