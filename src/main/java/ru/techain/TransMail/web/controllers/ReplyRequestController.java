@@ -10,6 +10,7 @@ import ru.techain.TransMail.api.email.entities.LetterBuilder;
 import ru.techain.TransMail.api.models.FinalEmployee;
 import ru.techain.TransMail.api.table.RealFullLotTableParser;
 import ru.techain.TransMail.email.EmailRepo;
+import ru.techain.TransMail.file.FileSaver;
 
 import javax.mail.MessagingException;
 import java.io.File;
@@ -23,9 +24,12 @@ public class ReplyRequestController {
     @RequestMapping(value = "/sendReply", method = RequestMethod.POST)
     public @ResponseBody
     String handleSendReply(@RequestParam("email") String email,
-                           @RequestParam("password") String password) throws IOException {
-        FullLotTableParser parser = getTestTableParser();
-
+                           @RequestParam("password") String password,
+                           @RequestParam("fileOrder")MultipartFile fileOrder,
+                           @RequestParam("employeeInformation")MultipartFile employeeInformation) throws IOException {
+       // FullLotTableParser parser = getTestTableParser();
+        FullLotTableParser parser = new RealFullLotTableParser(new FileReader(FileSaver.loadFile(fileOrder), Charset.forName("CP1251")),
+                new FileReader(FileSaver.loadFile(employeeInformation), Charset.forName("CP1251")));
         EmailSender sender = new EmailRepo();
 
         replyForSberbank(parser.getFinalEmployeesByProduct("Онлайн-подписка Сберпрайм (12 месяцев)"), email, password);

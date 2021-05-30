@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,9 +8,15 @@
     </head>
     <body>
         <form method="POST" enctype="multipart/form-data" action="/sendReply">
-            <input type="text" name="email">
-            <input type="password" name="password">
+            <input type="text" placeholder="E-mail" name="email">
+            <input type="password" placeholder="Пароль" name="password">
+            </br>
+            File order <input type="file" name="fileOrder">
+            </br>
+            Employee information <input type="file" name="employeeInformation">
+            </br>
             <input type="submit" value="Разослать">
+
         </form>
     </body>
 </html>
