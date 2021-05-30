@@ -9,4 +9,5 @@ import java.util.Map;
 public interface FullLotTableParser {
     List<FinalEmployee> getFinalEmployees();
     Map<String, Integer> getFinalMapPrizes();
+    List<FinalEmployee> getFinalEmployeesByProduct(String productName);
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RealFullLotTableParser implements FullLotTableParser {
     List<FinalEmployee> finalEmployees;
@@ -35,18 +36,18 @@ public class RealFullLotTableParser implements FullLotTableParser {
                 .withType(EmployeeData.class)
                 .build()
                 .parse();
-        finalEmployees= new ArrayList<>();
+        finalEmployees = new ArrayList<>();
         orders.forEach(o -> {
             String userCode = o.getUserCrocCode();
             Integer count = Integer.parseInt(o.getCount());
             dataEmployees.forEach(item -> {
-                        if(item.getUserCrocCode().equals(userCode)){
-                            //System.out.println(item.getUserFirstName());
-                            finalEmployees.add(new FinalEmployee(item.getUserLastName(), item.getUserFirstName(), item.getUserMiddleName(),item.getEmail(),o.getNameProduct(),count));
-                            return;
-                        }
-                        });
+                if (item.getUserCrocCode().equals(userCode)) {
+                    //System.out.println(item.getUserFirstName());
+                    finalEmployees.add(new FinalEmployee(item.getUserLastName(), item.getUserFirstName(), item.getUserMiddleName(), item.getEmail(), o.getNameProduct(), count));
+                    return;
+                }
             });
+        });
 
     }
 
@@ -58,5 +59,11 @@ public class RealFullLotTableParser implements FullLotTableParser {
     @Override
     public Map<String, Integer> getFinalMapPrizes() {
         return finalMapPrizes;
+    }
+
+    @Override
+    public List<FinalEmployee> getFinalEmployeesByProduct(String productName) {
+        return finalEmployees.stream().filter(it -> it.getNameProduct().equals(productName))
+                .collect(Collectors.toList());
     }
 }
